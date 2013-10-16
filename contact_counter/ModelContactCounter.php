@@ -136,6 +136,19 @@
             }
         }
 
+        public function getTotalContactsByItemId($item_id)
+        {
+            $sql = 'SELECT  i_contacts as total FROM '.$this->getTable(). ' WHERE fk_i_item_id = ' . $item_id ;
+            $result = $this->dao->query($sql) ;
+
+            $items = $result->result() ;
+            if( is_array($items) && count($items)>0) {
+                return $items[0]['total'];
+            } else {
+                return 0;
+            }
+        }
+
         /**
          * Delete house attributes given a item id
          * @param type $item_id
