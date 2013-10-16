@@ -156,9 +156,18 @@
 
 
     $item_title = '';
+    $s_title    = '';
     if(Params::getParam('id')!='' && is_numeric(Params::getParam('id') ) ) {
         $item   = Item::newInstance()->findByPrimaryKey(Params::getParam('id'));
-        $item_title  = ' - ' . $item['s_title'];
+        $s_title = $item['locale'][osc_admin_language()]['s_title'];
+        if($s_title=='') {
+            foreach($item['locale'] as $k => $v) {
+                if($v['s_title']!='') {
+                    $s_title = $v['s_title'];
+                }
+            }
+        }
+        $item_title  = ' - ' . $s_title;
     }
 
     osc_add_hook('admin_header', 'contact_counter_stats_head', 10);

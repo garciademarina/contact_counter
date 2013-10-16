@@ -37,7 +37,7 @@
         <?php _e('This plugin helps administrators to know how many times an user has contacted another.', 'contact_counter') ; ?>.
     </p>
     <p>
-        <?php _e('You can know how many times an user has contacted another knowing the listing or a user, even know the total contacts over the time.', 'contact_counter') ; ?>.
+        <?php _e('You can know how many times an user has contacted another knowing the listing or a user, even know the total contacts over the time.', 'contact_counter') ; ?>
     </p>
     <hr>
     <h2><?php _e('Frequently asked questions', 'contact_counter'); ?></h2>
