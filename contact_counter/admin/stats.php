@@ -1,11 +1,20 @@
 <?php
 
+    $total_contacts = 0;
+    if(Params::getParam('id')!='') {
+        $total_contacts = ModelContactCounter::newInstance()->getTotalContactsByItemId( Params::getParam('id') );
+    } else {
+        $total_contacts = ModelContactCounter::newInstance()->getTotalContacts();
+    }
 
+    $total_period = 0;
     $contacts = array();
     if( Params::getParam('type_stat') == 'week' ) {
         if(Params::getParam('id')!='') {
+            $total_period  = StatsContactCounter::newInstance()->count_contacts_item(date( 'Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 70, date("Y")) ), Params::getParam('id'),'week');
             $stats_contact = StatsContactCounter::newInstance()->new_contacts_count_item(date( 'Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 70, date("Y")) ), Params::getParam('id'),'week');
         } else {
+            $total_period  = StatsContactCounter::newInstance()->count_contacts(date( 'Y-m-d H:i:s',  mktime(0, 0, 0, date("m"), date("d") - 70, date("Y")) ),'week');
             $stats_contact = StatsContactCounter::newInstance()->new_contacts_count(date( 'Y-m-d H:i:s',  mktime(0, 0, 0, date("m"), date("d") - 70, date("Y")) ),'week');
         }
         for($k = 10; $k >= 0; $k--) {
@@ -13,8 +22,10 @@
         }
     } else if( Params::getParam('type_stat') == 'month' ) {
         if(Params::getParam('id')!='') {
+            $total_period  = StatsContactCounter::newInstance()->count_contacts_item(date( 'Y-m-d H:i:s', mktime(0, 0, 0, date("m") - 10, date("d"), date("Y")) ), Params::getParam('id'),'month');
             $stats_contact = StatsContactCounter::newInstance()->new_contacts_count_item(date( 'Y-m-d H:i:s', mktime(0, 0, 0, date("m") - 10, date("d"), date("Y")) ), Params::getParam('id'),'month');
         } else {
+            $total_period  = StatsContactCounter::newInstance()->count_contacts(date( 'Y-m-d H:i:s',  mktime(0, 0, 0, date("m") - 10, date("d"), date("Y")) ),'month');
             $stats_contact = StatsContactCounter::newInstance()->new_contacts_count(date( 'Y-m-d H:i:s',  mktime(0, 0, 0, date("m") - 10, date("d"), date("Y")) ),'month');
         }
         for($k = 10; $k >= 0; $k--) {
@@ -22,8 +33,10 @@
         }
     } else {
         if(Params::getParam('id')!='') {
+            $total_period  = StatsContactCounter::newInstance()->count_contacts_item(date( 'Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y")) ), Params::getParam('id'),'day');
             $stats_contact = StatsContactCounter::newInstance()->new_contacts_count_item(date( 'Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y")) ), Params::getParam('id'),'day');
         } else {
+            $total_period  = StatsContactCounter::newInstance()->count_contacts(date( 'Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y")) ),'day');
             $stats_contact = StatsContactCounter::newInstance()->new_contacts_count(date( 'Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y")) ),'day');
         }
         for($k = 10; $k >= 0; $k--) {
@@ -181,20 +194,23 @@
             </div>
         </div>
     </div>
-    <div class="clear"></div>
-</div>
-
-
-
-<div style="padding: 20px;">
-    <div style="float: left; width: 100%;">
-        <?php
-            echo '<p>'.__('This is a DINAMIC ROUTE, variables received', 'routes').'</p><br/>';
-            $args = Params::getParamsAsArray();
-            foreach($args as $k => $v) {
-                echo "<p><b>".$k."</b> => ".$v."</p>";
-            }
-        ?>
+    <div class="grid-row grid-50">
+        <div class="row-wrapper">
+            <div class="widget-box">
+                <div class="widget-box-title">
+                    <h3><?php _e('Contact information', 'contact_counter'); ?><?php echo $item_title; ?></h3>
+                </div>
+                <div class="widget-box-content" style="text-align: center;">
+                    <div style="display: inline-block;position:relative;">
+                        <span style="display:inline-block; vertical-align:middle;"><span style="font-size:1.5em;"><?php _e('Period total contacts', 'contact_counter'); ?>  <b><?php echo $total_period; ?></b></span></span>
+                    </div>
+                    <div class="clear"></div>
+                    <div style="display: inline-block;position:relative;">
+                        <span style="display:inline-block; vertical-align:middle;"><span style="font-size:1.5em;"><?php _e('All time contacts', 'contact_counter'); ?>  <b><?php echo $total_contacts; ?></b></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div style="clear: both;"></div>
+    <div class="clear"></div>
 </div>

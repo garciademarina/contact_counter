@@ -50,6 +50,21 @@
             $this->conn = new DBCommandClass($data);
         }
 
+        public function count_contacts($from_date, $date = 'day')
+        {
+            $this->conn->select('COUNT(fk_i_item_id) as num');
+            $this->conn->from(DB_TABLE_PREFIX.'t_item_counter_detail');
+            $this->conn->where("dt_date > '$from_date'");
+
+            $result = $this->conn->get();
+            if(!is_array($result->result())){
+                return 0;
+            }
+
+            $aux = $result->result();
+            return $aux[0]['num'];
+        }
+
         public function new_contacts_count($from_date, $date = 'day')
         {
             if($date=='week') {
@@ -68,6 +83,22 @@
 
             $result = $this->conn->get();
             return $result->result();
+        }
+
+        public function count_contacts_item($from_date, $id, $date = 'day')
+        {
+            $this->conn->select('COUNT(fk_i_item_id) as num');
+            $this->conn->from(DB_TABLE_PREFIX.'t_item_counter_detail');
+            $this->conn->where("dt_date > '$from_date'");
+            $this->conn->where("fk_i_item_id = ".$id);
+
+            $result = $this->conn->get();
+            if(!is_array($result->result())){
+                return 0;
+            }
+
+            $aux = $result->result();
+            return $aux[0]['num'];
         }
 
         public function new_contacts_count_item($from_date, $id, $date = 'day')
@@ -91,7 +122,7 @@
             if(!is_array($result->result())){
                 return array();
             }
-            
+
             return $result->result();
         }
 
