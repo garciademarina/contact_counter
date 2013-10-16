@@ -1,8 +1,6 @@
 Contact counter plugin
 ======================
 
-# contact counter plugin
-
 Compatible with Osclass version 3.1 and up.
 Osclass plugin that improve upload image process.
 
